@@ -469,15 +469,16 @@ function goBack() {
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background: #f5f5f5;
+  background: var(--color-bg);
 }
 
 .settings-card {
-  background: white;
+  background: var(--color-bg-card);
   border-radius: 1rem;
   width: 100%;
   max-width: 800px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
 }
 
 .card-header {
@@ -485,7 +486,7 @@ function goBack() {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
   gap: 1rem;
 }
 
@@ -493,19 +494,19 @@ function goBack() {
   background: none;
   border: none;
   font-size: 1rem;
-  color: #667eea;
+  color: var(--color-primary);
   cursor: pointer;
   font-weight: 600;
 }
 
 .card-header h1 {
-  color: #333;
+  color: var(--color-text);
   font-size: 1.25rem;
   text-align: center;
 }
 
 .btn-add {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -522,23 +523,25 @@ function goBack() {
 }
 
 .success-message {
-  background: #efe;
-  color: #4caf50;
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--color-success);
   padding: 0.75rem;
   border-radius: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border: 1px solid var(--color-success);
 }
 
 .error-message {
-  background: #fee;
-  color: #c33;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-danger);
   padding: 0.75rem;
   border-radius: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border: 1px solid var(--color-danger);
 }
 
 .btn-close-error {
@@ -546,23 +549,25 @@ function goBack() {
   border: none;
   cursor: pointer;
   font-size: 1rem;
+  color: var(--color-text-muted);
 }
 
 .info-box {
-  background: #e3f2fd;
+  background: rgba(59, 130, 246, 0.1);
   padding: 1rem;
   border-radius: 0.5rem;
-  border-left: 4px solid #2196f3;
+  border-left: 4px solid var(--color-info);
 }
 
 .info-box p {
-  color: #1565c0;
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
 .onboarding-welcome {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   padding: 1.5rem;
+  border-radius: 0.5rem;
 }
 
 .onboarding-welcome-content {
@@ -591,7 +596,7 @@ function goBack() {
 .loading {
   text-align: center;
   padding: 2rem;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 .empty-state {
@@ -605,17 +610,17 @@ function goBack() {
 }
 
 .empty-state h2 {
-  color: #333;
+  color: var(--color-text);
   margin-bottom: 0.5rem;
 }
 
 .empty-state p {
-  color: #666;
+  color: var(--color-text-secondary);
   margin-bottom: 1.5rem;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   color: white;
   border: none;
   padding: 0.875rem 1.5rem;
@@ -631,10 +636,11 @@ function goBack() {
 }
 
 .credential-card {
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 1rem;
   padding: 1.5rem;
   transition: box-shadow 0.2s;
+  background: var(--color-bg-input);
 }
 
 .credential-card.default {
@@ -660,13 +666,13 @@ function goBack() {
 }
 
 .provider-info h3 {
-  color: #333;
+  color: var(--color-text);
   font-size: 1.125rem;
   margin: 0;
 }
 
 .default-badge {
-  color: #f57c00;
+  color: #ffd700;
   font-size: 0.875rem;
   font-weight: 600;
   margin: 0;
@@ -684,10 +690,11 @@ function goBack() {
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 0.5rem;
+  color: var(--color-text-muted);
 }
 
 .credential-actions button:hover {
-  background: #f5f5f5;
+  background: var(--color-bg-card);
 }
 
 .credential-details {
@@ -702,12 +709,12 @@ function goBack() {
 }
 
 .detail-label {
-  color: #666;
+  color: var(--color-text-secondary);
   min-width: 80px;
 }
 
 .detail-value {
-  color: #333;
+  color: var(--color-text);
   font-family: monospace;
 }
 
@@ -715,7 +722,7 @@ function goBack() {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -724,12 +731,13 @@ function goBack() {
 }
 
 .modal-card {
-  background: white;
+  background: var(--color-bg-card);
   border-radius: 1rem;
   width: 100%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
+  border: 1px solid var(--border-color);
 }
 
 .modal-header {
@@ -737,11 +745,11 @@ function goBack() {
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h2 {
-  color: #333;
+  color: var(--color-text);
   font-size: 1.25rem;
   margin: 0;
 }
@@ -751,7 +759,7 @@ function goBack() {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #999;
+  color: var(--color-text-muted);
 }
 
 .modal-form {
@@ -769,18 +777,21 @@ function goBack() {
 
 .form-group label {
   font-weight: 500;
-  color: #555;
+  color: var(--color-text-secondary);
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   font-size: 1rem;
+  background: var(--color-bg-input);
+  color: var(--color-text);
 }
 
 .form-group small {
-  color: #666;
+  color: var(--color-text-secondary);
   font-size: 0.75rem;
 }
 
@@ -796,30 +807,31 @@ function goBack() {
   align-items: center;
   gap: 0.5rem;
   padding: 1rem;
-  border: 2px solid #e0e0e0;
-  background: white;
+  border: 2px solid var(--border-color);
+  background: var(--color-bg-card);
+  color: var(--color-text-secondary);
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .provider-option:hover {
-  border-color: #667eea;
+  border-color: var(--color-primary);
 }
 
 .provider-option.active {
-  border-color: #667eea;
-  background: #f0f0ff;
+  border-color: var(--color-primary);
+  background: rgba(139, 92, 246, 0.1);
 }
 
 .provider-info-box {
-  background: #f5f5f5;
+  background: var(--color-bg-input);
   padding: 0.75rem;
   border-radius: 0.5rem;
 }
 
 .provider-info-box p {
-  color: #666;
+  color: var(--color-text-secondary);
   margin: 0;
   font-size: 0.875rem;
 }
@@ -834,6 +846,7 @@ function goBack() {
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
+  color: var(--color-text);
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -848,9 +861,9 @@ function goBack() {
 }
 
 .btn-secondary {
-  background: white;
-  color: #666;
-  border: 1px solid #ddd;
+  background: var(--color-bg-card);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--border-color);
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   font-weight: 600;
@@ -874,20 +887,20 @@ function goBack() {
 .model-input-group input {
   flex: 1;
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   font-size: 1rem;
-  background: white;
+  background: var(--color-bg-input);
+  color: var(--color-text);
 }
 
 .model-input-group select:disabled {
-  background: #f5f5f5;
-  color: #999;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
 .model-input-group select.select-empty {
-  color: #999;
+  color: var(--color-text-muted);
 }
 
 .btn-check {
@@ -912,32 +925,32 @@ function goBack() {
 }
 
 .models-count {
-  color: #4caf50;
+  color: var(--color-success);
   font-size: 0.75rem;
   margin-top: 0.25rem;
 }
 
 .models-hint {
-  color: #666;
+  color: var(--color-text-secondary);
   font-size: 0.75rem;
   margin-top: 0.25rem;
 }
 
 /* API Key input con llave existente */
 .api-key-input.has-existing-key::placeholder {
-  color: #333;
+  color: var(--color-text);
   font-weight: 500;
   opacity: 0.7;
 }
 
 .api-key-input.has-existing-key {
-  background: #f0f8ff;
-  border-color: #4a90d9;
+  background: rgba(59, 130, 246, 0.1);
+  border-color: var(--color-info);
 }
 
 .input-hint {
   display: block;
-  color: #4a90d9;
+  color: var(--color-info);
   font-size: 0.75rem;
   margin-top: 0.25rem;
 }

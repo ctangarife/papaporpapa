@@ -284,16 +284,17 @@ function skipOnboarding() {
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--color-bg);
 }
 
 .onboarding-card {
-  background: white;
+  background: var(--color-bg-card);
   border-radius: 2rem;
   padding: 2rem;
   width: 100%;
   max-width: 600px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color);
 }
 
 .progress-container {
@@ -302,7 +303,7 @@ function skipOnboarding() {
 
 .progress-bar {
   height: 8px;
-  background: #e8e8e8;
+  background: var(--color-bg-input);
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 0.5rem;
@@ -310,13 +311,13 @@ function skipOnboarding() {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   transition: width 0.3s ease;
 }
 
 .step-indicator {
   font-size: 0.875rem;
-  color: #666;
+  color: var(--color-text-secondary);
   font-weight: 600;
 }
 
@@ -334,49 +335,45 @@ function skipOnboarding() {
 
 .step-content > h1 {
   font-size: 2rem;
-  color: #333;
+  color: var(--color-text);
   margin-bottom: 0.5rem;
 }
 
 .step-description {
-  color: #666;
+  color: var(--color-text-secondary);
   font-size: 1.125rem;
   margin-bottom: 2rem;
   max-width: 450px;
 }
 
 .info-box {
-  background: #e3f2fd;
+  background: rgba(59, 130, 246, 0.1);
   padding: 1.5rem;
   border-radius: 1rem;
   text-align: left;
   margin-bottom: 2rem;
-  border-left: 4px solid #2196f3;
+  border-left: 4px solid var(--color-info);
 }
 
 .info-box.llm-box {
-  background: #f3e5f5;
-  border-left-color: #9c27b0;
+  background: rgba(139, 92, 246, 0.1);
+  border-left-color: var(--color-primary);
 }
 
 .info-box h3 {
-  color: #1565c0;
+  color: var(--color-info);
   font-size: 1rem;
   margin-bottom: 0.5rem;
 }
 
 .info-box.llm-box h3 {
-  color: #7b1fa2;
+  color: var(--color-primary);
 }
 
 .info-box p {
-  color: #1565c0;
+  color: var(--color-text-secondary);
   font-size: 0.875rem;
   margin: 0;
-}
-
-.info-box.llm-box p {
-  color: #7b1fa2;
 }
 
 .providers-grid {
@@ -388,8 +385,8 @@ function skipOnboarding() {
 }
 
 .provider-card {
-  background: #f8f8f8;
-  border: 2px solid #e0e0e0;
+  background: var(--color-bg-input);
+  border: 2px solid var(--border-color);
   border-radius: 1rem;
   padding: 1.5rem 1rem;
   text-align: center;
@@ -402,14 +399,14 @@ function skipOnboarding() {
 
 .provider-name {
   font-weight: 600;
-  color: #333;
+  color: var(--color-text);
   margin-bottom: 0.25rem;
   font-size: 0.9rem;
 }
 
 .provider-desc {
   font-size: 0.75rem;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 .diagnostico-grid {
@@ -421,8 +418,8 @@ function skipOnboarding() {
 }
 
 .diagnostico-card {
-  background: #f8f8f8;
-  border: 2px solid #e0e0e0;
+  background: var(--color-bg-input);
+  border: 2px solid var(--border-color);
   border-radius: 1rem;
   padding: 1.5rem 1rem;
   cursor: pointer;
@@ -430,13 +427,13 @@ function skipOnboarding() {
 }
 
 .diagnostico-card:hover {
-  border-color: #667eea;
+  border-color: var(--color-primary);
   transform: translateY(-2px);
 }
 
 .diagnostico-card.selected {
-  border-color: #667eea;
-  background: #f0f0ff;
+  border-color: var(--color-primary);
+  background: rgba(139, 92, 246, 0.1);
 }
 
 .diagnostico-emoji {
@@ -447,13 +444,13 @@ function skipOnboarding() {
 
 .diagnostico-label {
   font-weight: 600;
-  color: #333;
+  color: var(--color-text);
   margin-bottom: 0.25rem;
 }
 
 .diagnostico-description {
   font-size: 0.75rem;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 .note {
@@ -462,7 +459,7 @@ function skipOnboarding() {
 
 .note p {
   font-size: 0.875rem;
-  color: #666;
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
@@ -478,7 +475,7 @@ function skipOnboarding() {
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  background: #f8f8f8;
+  background: var(--color-bg-input);
   border-radius: 1rem;
   text-align: left;
 }
@@ -490,13 +487,13 @@ function skipOnboarding() {
 
 .pref-content h4 {
   font-size: 0.875rem;
-  color: #666;
+  color: var(--color-text-secondary);
   margin-bottom: 0.25rem;
 }
 
 .pref-content p {
   font-size: 1rem;
-  color: #333;
+  color: var(--color-text);
   margin: 0;
   font-weight: 600;
 }
@@ -508,7 +505,7 @@ function skipOnboarding() {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   color: white;
   border: none;
   padding: 0.875rem 2rem;
@@ -533,9 +530,9 @@ function skipOnboarding() {
 }
 
 .btn-secondary {
-  background: white;
-  color: #666;
-  border: 1px solid #ddd;
+  background: var(--color-bg-card);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--border-color);
   padding: 0.875rem 2rem;
   border-radius: 1rem;
   font-size: 1rem;
@@ -544,13 +541,13 @@ function skipOnboarding() {
 }
 
 .btn-secondary:hover {
-  background: #f5f5f5;
+  background: var(--color-bg-input);
 }
 
 .skip-link {
   background: none;
   border: none;
-  color: #999;
+  color: var(--color-text-muted);
   font-size: 0.875rem;
   cursor: pointer;
   margin-top: 1rem;
@@ -558,6 +555,6 @@ function skipOnboarding() {
 }
 
 .skip-link:hover {
-  color: #666;
+  color: var(--color-text-secondary);
 }
 </style>

@@ -94,7 +94,8 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // Si ya completó onboarding y va a onboarding, mandar al dashboard
-  if (to.name === 'onboarding' && authStore.isAuthenticated && !authStore.needsOnboarding) {
+  // EXCEPCIÓN: permitir acceso con ?debug=true
+  if (to.name === 'onboarding' && authStore.isAuthenticated && !authStore.needsOnboarding && to.query.debug !== 'true') {
     next({ name: 'dashboard' })
     return
   }

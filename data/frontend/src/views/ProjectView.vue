@@ -278,7 +278,7 @@ function goBack() {
   background: none;
   border: none;
   font-size: 1rem;
-  color: #8b5cf6;
+  color: var(--color-primary);
   cursor: pointer;
   font-weight: 600;
 }
@@ -382,7 +382,7 @@ function goBack() {
 
 .btn-primary {
   background: var(--color-bg-card);
-  color: #8b5cf6;
+  color: var(--color-primary);
   border: none;
   padding: 0.875rem 2rem;
   border-radius: 2rem;
@@ -428,7 +428,7 @@ function goBack() {
 .task-label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #8b5cf6;
+  color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 1rem;
@@ -544,7 +544,7 @@ function goBack() {
 
 .btn-focus {
   background: var(--color-bg-card);
-  color: #8b5cf6;
+  color: var(--color-primary);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 1rem;
@@ -572,15 +572,15 @@ function goBack() {
 }
 
 .task-card.current {
-  border: 2px solid #8b5cf6;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
 }
 
 .task-number {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   color: white;
   display: flex;
   align-items: center;
@@ -626,7 +626,7 @@ function goBack() {
 }
 
 .task-status.current {
-  color: #8b5cf6;
+  color: var(--color-primary);
 }
 
 .task-status.pending {

@@ -150,15 +150,16 @@ function logout() {
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background: #f5f5f5;
+  background: var(--color-bg);
 }
 
 .profile-card {
-  background: white;
+  background: var(--color-bg-card);
   border-radius: 1rem;
   width: 100%;
   max-width: 500px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
 }
 
 .card-header {
@@ -166,14 +167,14 @@ function logout() {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .btn-back {
   background: none;
   border: none;
   font-size: 1rem;
-  color: #667eea;
+  color: var(--color-primary);
   cursor: pointer;
   font-weight: 600;
 }
@@ -183,7 +184,7 @@ function logout() {
 }
 
 .card-header h1 {
-  color: #333;
+  color: var(--color-text);
   font-size: 1.25rem;
   text-align: center;
 }
@@ -205,7 +206,7 @@ function logout() {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -223,42 +224,43 @@ function logout() {
 .user-name {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text);
   margin-bottom: 0.25rem;
 }
 
 .name-input {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text);
   padding: 0.5rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   width: 100%;
+  background: var(--color-bg-input);
 }
 
 .name-input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--color-primary);
 }
 
 .user-email {
   font-size: 0.875rem;
-  color: #999;
+  color: var(--color-text-muted);
 }
 
 .btn-edit {
   padding: 0.5rem 1rem;
-  border: 1px solid #ddd;
-  background: white;
+  border: 1px solid var(--border-color);
+  background: var(--color-bg-card);
   border-radius: 0.5rem;
   font-weight: 600;
-  color: #555;
+  color: var(--color-text-secondary);
   cursor: pointer;
 }
 
 .btn-edit:hover {
-  background: #f5f5f5;
+  background: var(--color-bg-input);
 }
 
 .edit-actions {
@@ -275,17 +277,17 @@ function logout() {
 }
 
 .btn-cancel {
-  background: #f5f5f5;
+  background: var(--color-bg-input);
   border: none;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 .btn-cancel:hover {
-  background: #e8e8e8;
+  background: var(--border-color);
 }
 
 .btn-save {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   border: none;
   color: white;
 }
@@ -296,24 +298,26 @@ function logout() {
 }
 
 .error-message {
-  background: #fee;
-  color: #c33;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-danger);
   padding: 0.75rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
+  border: 1px solid var(--color-danger);
 }
 
 .success-message {
-  background: #efe;
-  color: #4caf50;
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--color-success);
   padding: 0.75rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
+  border: 1px solid var(--color-success);
 }
 
 .stats-section h2,
 .account-section h2 {
-  color: #333;
+  color: var(--color-text);
   font-size: 1rem;
   margin-bottom: 1rem;
 }
@@ -325,10 +329,11 @@ function logout() {
 }
 
 .stat-card {
-  background: #f8f8f8;
+  background: var(--color-bg-input);
   border-radius: 1rem;
   padding: 1rem;
   text-align: center;
+  border: 1px solid var(--border-color);
 }
 
 .stat-emoji {
@@ -339,23 +344,23 @@ function logout() {
 .stat-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #333;
+  color: var(--color-text);
   margin-bottom: 0.25rem;
 }
 
 .stat-label {
   font-size: 0.75rem;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 .btn-settings-link {
   display: block;
   width: 100%;
   padding: 0.875rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
-  background: white;
-  color: #555;
+  background: var(--color-bg-card);
+  color: var(--color-text-secondary);
   font-weight: 600;
   text-align: center;
   text-decoration: none;
@@ -363,7 +368,7 @@ function logout() {
 }
 
 .btn-settings-link:hover {
-  background: #f5f5f5;
+  background: var(--color-bg-input);
 }
 
 .btn-logout {
@@ -371,13 +376,14 @@ function logout() {
   padding: 0.875rem;
   border: none;
   border-radius: 0.5rem;
-  background: #fee;
-  color: #c33;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-danger);
   font-weight: 600;
   cursor: pointer;
+  border: 1px solid var(--color-danger);
 }
 
 .btn-logout:hover {
-  background: #fcc;
+  background: rgba(239, 68, 68, 0.2);
 }
 </style>

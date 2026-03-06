@@ -266,7 +266,8 @@ function logout() {
   padding: 3rem;
   background: var(--color-bg-card);
   border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
 }
 
 .empty-emoji {
@@ -302,7 +303,7 @@ function logout() {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   color: white;
   border: none;
   padding: 0.875rem 1.5rem;
@@ -314,8 +315,8 @@ function logout() {
 
 .btn-secondary {
   background: var(--color-bg-card);
-  color: #667eea;
-  border: 2px solid #667eea;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-weight: 600;
@@ -323,7 +324,7 @@ function logout() {
 }
 
 .btn-secondary:hover {
-  background: #2a2a2a;
+  background: var(--color-bg-input);
 }
 
 .projects-grid {
@@ -336,14 +337,15 @@ function logout() {
   background: var(--color-bg-card);
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid var(--border-color);
 }
 
 .project-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg);
 }
 
 .project-header {
@@ -359,8 +361,8 @@ function logout() {
 }
 
 .project-tasks {
-  background: #2a2a4a;
-  color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--color-primary);
   padding: 0.25rem 0.5rem;
   border-radius: 1rem;
   font-size: 0.75rem;
@@ -379,14 +381,14 @@ function logout() {
 
 .progress-bar {
   height: 8px;
-  background: #262626;
+  background: var(--color-bg-input);
   border-radius: 4px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%);
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   transition: width 0.3s ease;
 }
 
@@ -394,7 +396,8 @@ function logout() {
   background: var(--color-bg-card);
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
 }
 
 .completed-section h3 {
@@ -412,7 +415,7 @@ function logout() {
   display: flex;
   justify-content: space-between;
   padding: 0.75rem;
-  background: #1a2e1a;
+  background: rgba(34, 197, 94, 0.1);
   border-radius: 0.5rem;
 }
 
