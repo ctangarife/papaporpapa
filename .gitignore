@@ -1,7 +1,8 @@
 # ==============================================================================
 # PAPAS APP - Git Ignore
 # ==============================================================================
-
+server/certbot/*
+data/static/*
 # Environment
 .env
 .env.local
@@ -18,7 +19,7 @@ __pycache__/
 *.egg
 *.egg-info/
 dist/
-**/build/
+*/build/
 *.egg
 
 # IDE
@@ -60,6 +61,9 @@ data/*/node_modules/
 data/*/.next/
 data/*/dist/
 data/*/.cache/
+
+# SSL Certificates (Let's Encrypt)
+server/certbot/
 
 .claude
 CLAUDE.MD
