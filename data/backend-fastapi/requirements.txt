@@ -1,0 +1,24 @@
+# ==============================================================================
+# PAPAS APP - Backend FastAPI Dependencies
+# ==============================================================================
+
+# FastAPI core
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.6
+pydantic-settings==2.7.1
+
+# LLM Clients
+ollama-client-lib==1.0.0
+httpx==0.28.1
+zai-sdk==0.2.2
+
+# CORS
+python-multipart==0.0.20
+
+# Logging
+python-json-logger==3.2.1
+
+# Development
+pytest==8.3.4
+pytest-asyncio==0.25.2
