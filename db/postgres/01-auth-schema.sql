@@ -62,15 +62,6 @@ CREATE TRIGGER trigger_users_update_updated_at
     FOR EACH ROW
     EXECUTE FUNCTION auth.update_updated_at();
 
--- ==============================================================================
--- TEST DATA (optional)
--- ==============================================================================
--- Test user: password is "password123"
--- Hash is bcrypt with rounds=10
-INSERT INTO auth.users (email, password_hash, first_name, coins_balance)
-VALUES ('test@papas.app', '$2b$10$XZQ7Q3N8Y8z8Z8Z8Z8Z8ZeY8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z', 'Test', 0)
-ON CONFLICT (email) DO NOTHING;
-
 -- Register migration
 SELECT public.register_migration('auth', 1);
 
