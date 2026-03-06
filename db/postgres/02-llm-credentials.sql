@@ -25,25 +25,8 @@ CREATE TABLE IF NOT EXISTS user_llm_credentials (
 CREATE INDEX idx_user_llm_credentials_user_id ON user_llm_credentials(user_id);
 CREATE INDEX idx_user_llm_credentials_provider ON user_llm_credentials(provider);
 
--- ==============================================================================
--- FUNCIÓN: Encriptar API key
--- ==============================================================================
-CREATE OR REPLACE FUNCTION encrypt_api_key(api_key TEXT)
-RETURNS TEXT AS $$
-BEGIN
-    RETURN pgp_sym_encrypt(api_key, 'papas-llm-key-2024')::TEXT;
-END;
-$$ LANGUAGE plpgsql;
-
--- ==============================================================================
--- FUNCIÓN: Desencriptar API key
--- ==============================================================================
-CREATE OR REPLACE FUNCTION decrypt_api_key(encrypted_key TEXT)
-RETURNS TEXT AS $$
-BEGIN
-    RETURN pgp_sym_decrypt(encrypted_key::BYTEA, 'papas-llm-key-2024');
-END;
-$$ LANGUAGE plpgsql;
+-- NOTA: La encriptación/desencriptación de API keys se maneja en el backend (Node.js)
+-- usando crypto con LLM_ENCRYPTION_KEY del entorno, no en la base de datos.
 
 -- ==============================================================================
 -- TRIGGER: Actualizar timestamp
