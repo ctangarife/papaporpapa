@@ -29,10 +29,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     } else if (exception instanceof QueryFailedError) {
       // Manejar errores de base de datos de PostgreSQL
       const detail = (exception as any).detail;
-      if (detail && detail.includes('Key (email)=') || detail.includes('users_email_key')) {
+      if (detail && typeof detail === 'string' && (detail.includes('Key (email)=') || detail.includes('users_email_key'))) {
         status = HttpStatus.CONFLICT;
         message = 'El email ya está registrado';
-      } else if (detail && detail.includes('Key (username)=') || detail.includes('users_username_key')) {
+      } else if (detail && typeof detail === 'string' && (detail.includes('Key (username)=') || detail.includes('users_username_key'))) {
         status = HttpStatus.CONFLICT;
         message = 'El nombre de usuario ya está en uso';
       } else {
