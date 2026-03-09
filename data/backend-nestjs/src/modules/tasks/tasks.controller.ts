@@ -97,13 +97,17 @@ export class TasksController {
 
   @Post(':id/skip')
   async skip(@Param('id') id: string) {
-    const task = await this.tasksService.skip(id);
+    const result = await this.tasksService.skip(id);
     return {
-      id: task.id,
-      description: task.description,
-      status: task.status,
-      coinValue: task.coinValue,
-      skippedAt: task.skippedAt,
+      task: {
+        id: result.task.id,
+        description: result.task.description,
+        status: result.task.status,
+        coinValue: result.task.coinValue,
+        skippedAt: result.task.skippedAt,
+        skipCount: result.task.skipCount,
+      },
+      blockingDetected: result.blockingDetected,
     };
   }
 
@@ -122,5 +126,23 @@ export class TasksController {
   async remove(@Param('id') id: string) {
     await this.tasksService.delete(id);
     return { message: 'Tarea eliminada correctamente' };
+  }
+
+  @Post(':id/split')
+  async split(@Param('id') id: string) {
+    const result = await this.tasksService.split(id);
+    return {
+      newTasks: result.newTasks.map(t => ({
+        id: t.id,
+        description: t.description,
+        status: t.status,
+        coinValue: t.coinValue,
+        sortOrder: t.sortOrder,
+      })),
+      originalTask: {
+        id: result.originalTask.id,
+        description: result.originalTask.description,
+      },
+    };
   }
 }

@@ -35,6 +35,9 @@ export class Task {
   @Column({ name: 'skipped_at', nullable: true })
   skippedAt: Date;
 
+  @Column({ name: 'skip_count', default: 0 })
+  skipCount: number;
+
   @ManyToOne(() => Project, (project) => project.tasks, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'project_id' })
   project: Project;

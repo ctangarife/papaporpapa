@@ -13,7 +13,9 @@ const authStore = useAuthStore()
 const loading = ref(true)
 const completing = ref(false)
 const skipping = ref(false)
+const splitting = ref(false)
 const showAllTasks = ref(false)
+const showSherpaModal = ref(false)
 
 const projectId = computed(() => route.params.id as string)
 
@@ -75,7 +77,13 @@ async function skipTask() {
 
   try {
     console.log('[ProjectView] Saltando tarea:', currentTask.value.id)
-    await tasksApi.skip(currentTask.value.id)
+    const response = await tasksApi.skip(currentTask.value.id)
+
+    // Check if blocking was detected
+    if (response.data.blockingDetected) {
+      console.log('[ProjectView] Bloqueo detectado, mostrando modal Sherpa')
+      showSherpaModal.value = true
+    }
 
     // Recargar proyecto
     await projectsStore.fetchProject(projectId.value)
@@ -86,6 +94,35 @@ async function skipTask() {
   } finally {
     skipping.value = false
   }
+}
+
+async function splitTask() {
+  if (!currentTask.value || splitting.value) return
+
+  splitting.value = true
+
+  try {
+    console.log('[ProjectView] Dividiendo tarea (Modo Sherpa):', currentTask.value.id)
+    await tasksApi.split(currentTask.value.id)
+
+    // Recargar proyecto
+    await projectsStore.fetchProject(projectId.value)
+
+    // Cerrar modal si está abierto
+    showSherpaModal.value = false
+
+    console.log('[ProjectView] Tarea dividida')
+  } catch (e) {
+    console.error('[ProjectView] Error dividiendo tarea:', e)
+  } finally {
+    splitting.value = false
+  }
+}
+
+function dismissSherpaModal() {
+  showSherpaModal.value = false
+  // Reset skip count by reloading the project (the task should be reset)
+  projectsStore.fetchProject(projectId.value)
 }
 
 async function resetTask(taskId: string) {
@@ -173,8 +210,17 @@ function goBack() {
             class="btn-skip"
             :disabled="skipping"
           >
-            <span v-if="skipping">Saltando...</span>
-            <span v-else>⏭ SALTAR</span>
+            <span v-if="skipping">Después...</span>
+            <span v-else>⏭ DESPUÉS</span>
+          </button>
+
+          <button
+            @click="splitTask"
+            class="btn-split"
+            :disabled="splitting"
+          >
+            <span v-if="splitting">Dividiendo...</span>
+            <span v-else>🤖 ES MUY GRANDE</span>
           </button>
 
           <button
@@ -256,6 +302,41 @@ function goBack() {
         </div>
       </div>
     </div>
+
+    <!-- Sherpa Modal (Bloqueo Detectado) -->
+    <Transition name="modal">
+      <div v-if="showSherpaModal" class="modal-overlay" @click.self="dismissSherpaModal">
+        <div class="sherpa-modal">
+          <div class="sherpa-emoji">🤠</div>
+          <h2>Sherpa detectó un bloqueo</h2>
+          <p class="sherpa-message">
+            He notado que has saltado esta tarea un par de veces.
+            A veces las cosas parecen muy grandes, pero puedo ayudarte a dividirlas en pasos más pequeños.
+          </p>
+          <div class="current-task-preview">
+            <span class="preview-label">Tarea actual:</span>
+            <p class="preview-text">{{ currentTask?.description }}</p>
+          </div>
+          <div class="sherpa-actions">
+            <button
+              @click="splitTask"
+              class="btn-sherpa-split"
+              :disabled="splitting"
+            >
+              <span v-if="splitting">Dividiendo...</span>
+              <span v-else>✂️ Sí, dividir en pasos más pequeños</span>
+            </button>
+            <button
+              @click="dismissSherpaModal"
+              class="btn-sherpa-dismiss"
+              :disabled="splitting"
+            >
+              No, puedo hacerlo solo
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -671,5 +752,196 @@ function goBack() {
 .btn-reset:hover {
   background: #ff9800;
   color: white;
+}
+
+/* Botón de dividir (Modo Sherpa) */
+.btn-split {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.btn-split:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+}
+
+.btn-split:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-split:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+/* Modal Transition */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-active .sherpa-modal,
+.modal-leave-active .sherpa-modal {
+  transition: transform 0.3s ease;
+}
+
+.modal-enter-from .sherpa-modal,
+.modal-leave-to .sherpa-modal {
+  transform: scale(0.9) translateY(20px);
+}
+
+/* Sherpa Modal */
+.sherpa-modal {
+  background: var(--color-bg-card);
+  border-radius: 2rem;
+  padding: 2.5rem;
+  max-width: 450px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 80px rgba(139, 92, 246, 0.3);
+  border: 2px solid var(--color-primary);
+  animation: sherpaPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes sherpaPop {
+  from {
+    transform: scale(0.8) translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.sherpa-emoji {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: sherpaWave 2s ease-in-out infinite;
+}
+
+@keyframes sherpaWave {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+}
+
+.sherpa-modal h2 {
+  color: var(--color-text);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.sherpa-message {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.current-task-preview {
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.preview-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.preview-text {
+  color: var(--color-text);
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.sherpa-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-sherpa-split {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.btn-sherpa-split:hover:not(:disabled) {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+}
+
+.btn-sherpa-split:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-sherpa-dismiss {
+  background: none;
+  color: var(--color-text-secondary);
+  border: none;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.btn-sherpa-dismiss:hover:not(:disabled) {
+  color: var(--color-text);
+}
+
+.btn-sherpa-dismiss:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>

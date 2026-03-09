@@ -79,6 +79,8 @@ export const tasksApi = {
     api.post(`/tasks/${id}/complete`),
   skip: (id: string) =>
     api.post(`/tasks/${id}/skip`),
+  split: (id: string) =>
+    api.post(`/tasks/${id}/split`),
   reset: (id: string) =>
     api.post(`/tasks/${id}/reset`)
 }

@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { api } from '@/api'
+import NotificationSettings from '@/components/NotificationSettings.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -12,6 +13,9 @@ const saving = ref(false)
 const checking = ref(false)
 const error = ref<string | null>(null)
 const success = ref(false)
+
+// Pestaña activa
+const activeTab = ref<'llm' | 'notifications'>('llm')
 
 // Detectar si viene del onboarding
 const fromOnboarding = computed(() => route.query.onboarding === 'true')
@@ -258,51 +262,70 @@ function goBack() {
     <div class="settings-card">
       <header class="card-header">
         <button @click="goBack" class="btn-back">← Volver</button>
-        <h1>⚙️ Configuración LLM</h1>
-        <button @click="openAddModal" class="btn-add">
-          + Agregar
-        </button>
+        <h1>⚙️ Configuración</h1>
       </header>
 
-      <!-- Mensaje de bienvenida del onboarding -->
-      <div v-if="fromOnboarding" class="onboarding-welcome">
-        <div class="onboarding-welcome-content">
-          <span class="onboarding-emoji">🎉</span>
-          <div>
-            <h2>¡Bienvenido a Papas App!</h2>
-            <p>Para comenzar a crear proyectos, necesitas configurar al menos un proveedor de IA. Agrega tus credenciales y estarás listo para empezar.</p>
-          </div>
-        </div>
+      <!-- Tabs Navigation -->
+      <div class="tabs-nav">
+        <button
+          :class="['tab-button', { active: activeTab === 'llm' }]"
+          @click="activeTab = 'llm'"
+        >
+          <span class="tab-icon">🤖</span>
+          <span class="tab-label">Modelos IA</span>
+        </button>
+        <button
+          :class="['tab-button', { active: activeTab === 'notifications' }]"
+          @click="activeTab = 'notifications'"
+        >
+          <span class="tab-icon">🔔</span>
+          <span class="tab-label">Recordatorios</span>
+        </button>
       </div>
 
-      <div class="settings-content">
-        <div v-if="success" class="success-message">
-          Configuración guardada correctamente
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- Mensaje de bienvenida del onboarding -->
+        <div v-if="fromOnboarding && activeTab === 'llm'" class="onboarding-welcome">
+          <div class="onboarding-welcome-content">
+            <span class="onboarding-emoji">🎉</span>
+            <div>
+              <h2>¡Bienvenido a Papas App!</h2>
+              <p>Para comenzar a crear proyectos, necesitas configurar al menos un proveedor de IA. Agrega tus credenciales y estarás listo para empezar.</p>
+            </div>
+          </div>
         </div>
 
-        <div v-if="error" class="error-message">
-          {{ error }}
-          <button @click="error = null" class="btn-close-error">✕</button>
-        </div>
+        <!-- LLM Tab -->
+        <div v-show="activeTab === 'llm'" class="tab-pane">
+          <div class="settings-content">
+            <div v-if="success" class="success-message">
+              Configuración guardada correctamente
+            </div>
 
-        <div class="info-box">
-          <p>Configura tus propias credenciales para cada proveedor de LLM. Estas credenciales son privadas y solo las usará tu cuenta.</p>
-        </div>
+            <div v-if="error" class="error-message">
+              {{ error }}
+              <button @click="error = null" class="btn-close-error">✕</button>
+            </div>
 
-        <div v-if="loading" class="loading">
-          Cargando configuración...
-        </div>
+            <div class="info-box">
+              <p>Configura tus propias credenciales para cada proveedor de LLM. Estas credenciales son privadas y solo las usará tu cuenta.</p>
+            </div>
 
-        <div v-else-if="credentials.length === 0" class="empty-state">
-          <div class="empty-emoji">🔑</div>
-          <h2>Sin credenciales configuradas</h2>
-          <p>Agrega tus credenciales para usar los modelos LLM</p>
-          <button @click="openAddModal" class="btn-primary">
-            Agregar Credencial
-          </button>
-        </div>
+            <div v-if="loading" class="loading">
+              Cargando configuración...
+            </div>
 
-        <div v-else class="credentials-list">
+            <div v-else-if="credentials.length === 0" class="empty-state">
+              <div class="empty-emoji">🔑</div>
+              <h2>Sin credenciales configuradas</h2>
+              <p>Agrega tus credenciales para usar los modelos LLM</p>
+              <button @click="openAddModal" class="btn-primary">
+                Agregar Credencial
+              </button>
+            </div>
+
+            <div v-else class="credentials-list">
           <div
             v-for="cred in credentials"
             :key="cred.id"
@@ -344,7 +367,19 @@ function goBack() {
               </div>
             </div>
           </div>
+
+          <!-- Add button at the bottom of credentials list -->
+          <button @click="openAddModal" class="btn-add-credentials">
+            + Agregar Credencial
+          </button>
         </div>
+      </div>
+      </div>
+
+      <!-- Notifications Tab -->
+      <div v-show="activeTab === 'notifications'" class="tab-pane">
+        <NotificationSettings />
+      </div>
       </div>
     </div>
 
@@ -953,5 +988,88 @@ function goBack() {
   color: var(--color-info);
   font-size: 0.75rem;
   margin-top: 0.25rem;
+}
+
+/* Tabs Navigation */
+.tabs-nav {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 0.5rem 0.5rem 0;
+}
+
+.tab-button:hover {
+  color: var(--color-text);
+  background: var(--color-bg-input);
+}
+
+.tab-button.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.tab-icon {
+  font-size: 1.25rem;
+}
+
+.tab-label {
+  font-size: 0.9rem;
+}
+
+/* Tab Content */
+.tab-content {
+  min-height: 300px;
+}
+
+.tab-pane {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Add button for credentials list */
+.btn-add-credentials {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.btn-add-credentials:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
 }
 </style>

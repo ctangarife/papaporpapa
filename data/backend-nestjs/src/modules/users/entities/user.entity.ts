@@ -36,6 +36,9 @@ export class User {
   @Column({ name: 'onboarding_completed', type: 'boolean', default: false })
   onboardingCompleted: boolean;
 
+  @Column({ name: 'last_interaction_at', type: 'timestamp with time zone', nullable: true })
+  lastInteractionAt: Date;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

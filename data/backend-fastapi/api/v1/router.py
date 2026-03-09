@@ -125,6 +125,114 @@ async def list_providers():
     }
 
 
+@router.post("/split-task")
+async def split_task(request: ChatRequest):
+    """
+    "Modo Sherpa" - Divide una tarea grande en subtareas más pequeñas
+
+    Este endpoint toma una tarea que el usuario encuentra abrumadora
+    y la divide en 2-3 micro-tareas accionables.
+
+    Args:
+        request: Request con la descripción de la tarea y configuración
+
+    Returns:
+        Lista de subtareas generadas
+    """
+    try:
+        service = get_llm_service(request.provider)
+
+        # Preparar credenciales para el servicio específico
+        provider_credentials = None
+        if request.credentials:
+            creds_dict = request.credentials.model_dump()
+
+            # Extraer credenciales específicas del provider
+            if request.provider == LLMProvider.zai and creds_dict.get("zai"):
+                provider_credentials = creds_dict["zai"]
+            elif request.provider == LLMProvider.minimax and creds_dict.get("minimax"):
+                provider_credentials = creds_dict["minimax"]
+            elif request.provider == LLMProvider.ollama and creds_dict.get("ollama"):
+                provider_credentials = creds_dict["ollama"]
+
+        # Prompt específico para dividir tareas
+        from schemas.llm import Message
+
+        system_prompt = """Eres un asistente especialista en dividir tareas grandes en pasos pequeños y accionables.
+El usuario se siente abrumado por una tarea. Tu trabajo es dividirla en 2 o 3 subtareas mucho más pequeñas, concretas y accionables.
+
+IMPORTANTE:
+- Devuelve EXACTAMENTE entre 2 y 3 subtareas
+- Cada subtarea debe ser una acción específica y medible
+- Usa lenguaje simple y directo
+- Formato de respuesta: JSON válido con la siguiente estructura:
+{
+  "subtasks": [
+    "Primera subtarea específica y accionable",
+    "Segunda subtarea específica y accionable",
+    "Tercera subtarea específica y accionable (si aplica)"
+  ]
+}
+
+NO incluyas explicaciones adicionales, solo el JSON."""
+
+        user_prompt = f"""Por favor, divide la siguiente tarea en 2 o 3 subtareas mucho más pequeñas y específicas:
+
+TAREA ORIGINAL: {request.goal}
+
+Responde SOLO con el JSON en el formato especificado."""
+
+        messages = [
+            Message(role="system", content=system_prompt),
+            Message(role="user", content=user_prompt)
+        ]
+
+        response = await service.chat_completion(
+            messages=messages,
+            model=request.model,
+            credentials=provider_credentials
+        )
+
+        # Extraer el JSON de la respuesta
+        import json
+        import re
+
+        # Buscar el JSON en la respuesta
+        json_match = re.search(r'\{[\s\S]*\}', response)
+        if json_match:
+            json_str = json_match.group(0)
+            parsed = json.loads(json_str)
+            subtasks = parsed.get("subtasks", [])
+        else:
+            # Fallback: intentar parsear directamente
+            try:
+                parsed = json.loads(response)
+                subtasks = parsed.get("subtasks", [])
+            except:
+                # Último recurso: split por líneas
+                subtasks = [
+                    f"Paso 1: {request.goal}",
+                    f"Paso 2: Continuar con {request.goal}",
+                ]
+
+        # Asegurar que tenemos al menos 2 subtareas
+        if len(subtasks) < 2:
+            subtasks = [
+                f"Primer paso para: {request.goal}",
+                f"Segundo paso para: {request.goal}",
+            ]
+
+        # Limitar a 3 subtareas
+        subtasks = subtasks[:3]
+
+        return {"subtasks": subtasks}
+
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error dividiendo tarea: {str(e)}")
+
+
 @router.post("/models")
 async def get_available_models(
     provider: LLMProvider = Query(...),

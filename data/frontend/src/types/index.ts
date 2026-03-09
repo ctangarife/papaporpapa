@@ -45,6 +45,7 @@ export interface Task {
   coinValue: number
   sortOrder: number
   dependsOn: string[]
+  skipCount?: number
   createdAt: string
   completedAt: string | null
   skippedAt: string | null
