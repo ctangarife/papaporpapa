@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { CompleteOnboardingDto } from './dto/complete-onboarding.dto';
 
 @Injectable()
 export class AuthService {
@@ -101,9 +102,16 @@ export class AuthService {
   }
 
   /**
-   * Marca el onboarding como completado para el usuario
+   * Marca el onboarding como completado para el usuario y actualiza el diagnóstico
    */
-  async completeOnboarding(userId: string) {
+  async completeOnboarding(userId: string, completeOnboardingDto: CompleteOnboardingDto) {
+    // Actualizar diagnóstico si se proporcionó
+    if (completeOnboardingDto.diagnosis) {
+      await this.usersService.updateProfile(userId, {
+        diagnosis: completeOnboardingDto.diagnosis,
+      });
+    }
+
     const user = await this.usersService.updateOnboarding(userId, true);
     return {
       success: true,
@@ -112,6 +120,7 @@ export class AuthService {
         email: user.email,
         name: user.firstName,
         onboardingCompleted: user.onboardingCompleted,
+        diagnosis: user.diagnosis,
       },
     };
   }

@@ -2,6 +2,7 @@ import { Controller, Post, Body, HttpCode, HttpStatus, UseGuards, Request } from
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { CompleteOnboardingDto } from './dto/complete-onboarding.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
@@ -21,7 +22,7 @@ export class AuthController {
 
   @Post('onboarding/complete')
   @UseGuards(JwtAuthGuard)
-  async completeOnboarding(@Request() req) {
-    return this.authService.completeOnboarding(req.user.userId);
+  async completeOnboarding(@Request() req, @Body() completeOnboardingDto: CompleteOnboardingDto) {
+    return this.authService.completeOnboarding(req.user.userId, completeOnboardingDto);
   }
 }

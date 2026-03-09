@@ -33,9 +33,8 @@ export interface RegisterData {
   password: string
   firstName: string
   lastName?: string
-  username?: string
+  username: string
   birthDate?: string
-  diagnosis?: DiagnosisType
 }
 
 export interface Task {

@@ -66,10 +66,15 @@ export const useAuthStore = defineStore('auth', () => {
     clearAuth()
   }
 
-  async function completeOnboarding() {
-    const response = await api.post<{ success: boolean; user: any }>('/auth/onboarding/complete')
+  async function completeOnboarding(diagnosis?: string) {
+    const response = await api.post<{ success: boolean; user: any }>('/auth/onboarding/complete', {
+      diagnosis,
+    })
     if (user.value && response.data.user) {
       user.value.onboardingCompleted = true
+      if (response.data.user.diagnosis) {
+        user.value.diagnosis = response.data.user.diagnosis
+      }
     }
   }
 

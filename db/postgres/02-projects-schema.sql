@@ -28,12 +28,13 @@ CREATE TABLE IF NOT EXISTS projects.tasks (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     project_id UUID NOT NULL REFERENCES projects.projects(id) ON DELETE CASCADE,
     description TEXT NOT NULL,
-    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'blocked')),
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'blocked', 'skipped')),
     coin_value INTEGER DEFAULT 10,
     sort_order INTEGER NOT NULL,
     depends_on UUID[] DEFAULT '{}', -- Array of task IDs that must be completed first
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    completed_at TIMESTAMP WITH TIME ZONE
+    completed_at TIMESTAMP WITH TIME ZONE,
+    skipped_at TIMESTAMP WITH TIME ZONE
 );
 
 -- Indexes
@@ -65,3 +66,5 @@ COMMENT ON TABLE projects.projects IS 'User projects';
 COMMENT ON TABLE projects.tasks IS 'Project tasks (potatoes)';
 COMMENT ON COLUMN projects.tasks.depends_on IS 'IDs of tasks that must be completed first';
 COMMENT ON COLUMN projects.tasks.coin_value IS 'Coins awarded when task is completed';
+COMMENT ON COLUMN projects.tasks.skipped_at IS 'When the task was skipped by the user';
+COMMENT ON COLUMN projects.tasks.status IS 'pending: not started, completed: done, blocked: cannot be done yet, skipped: user chose to skip it';

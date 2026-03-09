@@ -73,7 +73,7 @@ function selectDiagnostico(diagnosis: DiagnosisType) {
 async function completeOnboarding() {
   loading.value = true
   try {
-    await authStore.completeOnboarding()
+    await authStore.completeOnboarding(onboardingData.value.diagnosis || undefined)
     // Redirigir a settings para configurar LLM
     router.push('/settings?onboarding=true')
   } catch (error) {
@@ -83,14 +83,28 @@ async function completeOnboarding() {
   }
 }
 
-function goToSettings() {
-  // Completar onboarding y redirigir a settings
-  completeOnboarding()
+async function goToSettings() {
+  loading.value = true
+  try {
+    await authStore.completeOnboarding(onboardingData.value.diagnosis || 'NONE')
+    router.push('/settings?onboarding=true')
+  } catch (error) {
+    console.error('Error al ir a settings:', error)
+  } finally {
+    loading.value = false
+  }
 }
 
-function skipOnboarding() {
-  onboardingData.value.diagnosis = 'NONE'
-  completeOnboarding()
+async function skipOnboarding() {
+  loading.value = true
+  try {
+    await authStore.completeOnboarding('NONE')
+    router.push('/settings?onboarding=true')
+  } catch (error) {
+    console.error('Error al omitir onboarding:', error)
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 

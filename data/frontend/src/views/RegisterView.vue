@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import type { RegisterData, DiagnosisType } from '@/types'
+import type { RegisterData } from '@/types'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -12,24 +12,12 @@ const formData = ref<RegisterData>({
   password: '',
   firstName: '',
   lastName: '',
-  username: '',
-  diagnosis: undefined
+  username: ''
 })
 
 const confirmPassword = ref('')
 const loading = ref(false)
 const error = ref<string | null>(null)
-const showAdvanced = ref(false)
-
-const diagnosticos: { value: DiagnosisType, label: string }[] = [
-  { value: 'TEA', label: 'TEA (Trastorno del Espectro Autista)' },
-  { value: 'TDHA', label: 'TDHA (Déficit de Atención)' },
-  { value: 'TEA_TDHA', label: 'TEA + TDHA' },
-  { value: 'DISLEXIA', label: 'Dislexia' },
-  { value: 'TDA', label: 'TDA (Coordinación)' },
-  { value: 'NONE', label: 'Ninguno / Prefiero no decirlo' },
-  { value: 'OTHER', label: 'Otro' },
-]
 
 async function handleRegister() {
   error.value = null
@@ -67,10 +55,6 @@ function generateUsername() {
     const baseName = formData.value.firstName.toLowerCase().replace(/[^a-z0-9]/g, '')
     formData.value.username = baseName + Math.floor(Math.random() * 1000)
   }
-}
-
-function toggleAdvanced() {
-  showAdvanced.value = !showAdvanced.value
 }
 </script>
 
@@ -113,6 +97,24 @@ function toggleAdvanced() {
           </div>
 
           <div class="form-group">
+            <label for="username">
+              Username *
+              <button type="button" @click.prevent="generateUsername" class="btn-generate">
+                🎲 Generar
+              </button>
+            </label>
+            <input
+              id="username"
+              v-model="formData.username"
+              type="text"
+              required
+              placeholder="nombre123"
+              autocomplete="username"
+            />
+            <small>Debes tener un username único. Puedes generar uno automáticamente.</small>
+          </div>
+
+          <div class="form-group">
             <label for="email">Email *</label>
             <input
               id="email"
@@ -146,43 +148,6 @@ function toggleAdvanced() {
               placeholder="Repite tu contraseña"
               autocomplete="new-password"
             />
-          </div>
-        </div>
-
-        <!-- Campos opcionales -->
-        <div class="form-section">
-          <button type="button" @click="toggleAdvanced" class="toggle-advanced">
-            {{ showAdvanced ? '−' : '+' }} {{ showAdvanced ? 'Menos opciones' : 'Más opciones' }}
-          </button>
-
-          <div v-if="showAdvanced" class="advanced-fields">
-            <div class="form-group">
-              <label for="username">
-                Username (opcional)
-                <button type="button" @click.prevent="generateUsername" class="btn-generate">
-                  🎲 Generar
-                </button>
-              </label>
-              <input
-                id="username"
-                v-model="formData.username"
-                type="text"
-                placeholder="nombre123"
-                autocomplete="username"
-              />
-              <small>Solo letras, números y guiones. Dejar vacío para generar automáticamente.</small>
-            </div>
-
-            <div class="form-group">
-              <label for="diagnosis">Diagnóstico (opcional)</label>
-              <select id="diagnosis" v-model="formData.diagnosis">
-                <option value="">Seleccionar (opcional)</option>
-                <option v-for="diag in diagnosticos" :key="diag.value" :value="diag.value">
-                  {{ diag.label }}
-                </option>
-              </select>
-              <small>Esto nos ayuda a personalizar la aplicación para ti. Es completamente opcional.</small>
-            </div>
           </div>
         </div>
 
@@ -306,29 +271,6 @@ select:focus {
 small {
   font-size: 0.75rem;
   color: var(--color-text-secondary);
-}
-
-.toggle-advanced {
-  background: none;
-  border: none;
-  color: #8b5cf6;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.toggle-advanced:hover {
-  text-decoration: underline;
-}
-
-.advanced-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
 }
 
 .btn-primary {
